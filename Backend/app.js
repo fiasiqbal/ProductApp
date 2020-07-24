@@ -69,6 +69,12 @@ app.delete('/delete/:id',function(req,res){
     })
 })
 
+app.post('/login',function(req,res){
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+
+})
+
 app.listen(3000, function() {
     console.log('Listening to port 3000');
 })

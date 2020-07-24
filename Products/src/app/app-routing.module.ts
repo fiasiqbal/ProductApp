@@ -3,12 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductListComponent } from "./product-list/product-list.component";
 import { NewProductComponent } from "./new-product/new-product.component";
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 const routes: Routes = [
   {path:'',component:ProductListComponent},
   {path:'add',component:NewProductComponent},
-  {path:'edit',component:EditProductComponent}
+  {path:'edit',component:EditProductComponent},
+  {path:'login',component:LoginComponent},
+  {path:'register',component:RegisterComponent}
 ];
 
 @NgModule({
