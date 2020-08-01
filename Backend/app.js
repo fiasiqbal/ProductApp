@@ -1,6 +1,7 @@
 const express = require('express');
 const ProductData = require('./src/model/Productdata');
 const cors = require('cors');
+const Userdata = require('./src/model/Userdata');
 
 var app = new express();
 app.use(cors());
@@ -24,13 +25,14 @@ app.post('/insert', function(req,res){
         productName : req.body.product.productName,
         productCode : req.body.product.productCode,
         releaseDate : req.body.product.releaseDate,
-        description : req.body.product.decription,
+        description : req.body.product.description,
         price : req.body.product.price,
         starRating : req.body.product.starRating,
         imageUrl : req.body.product.imageUrl
     };
     var product = new ProductData(product);
     product.save();
+    res.end();
 })
 
 app.put('/edit',function(req,res){
@@ -42,7 +44,7 @@ app.put('/edit',function(req,res){
         productName : req.body.product.productName,
         productCode : req.body.product.productCode,
         releaseDate : req.body.product.releaseDate,
-        description : req.body.product.decription,
+        description : req.body.product.description,
         price : req.body.product.price,
         starRating : req.body.product.starRating,
         imageUrl : req.body.product.imageUrl
@@ -69,10 +71,38 @@ app.delete('/delete/:id',function(req,res){
     })
 })
 
-app.post('/login',function(req,res){
+app.post('/users/login',function(req,res){
     res.header('Access-Control-Allow-Origin','*');
     res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    var email = req.body.user.email;
+    var password = req.body.user.password;
+    Userdata.findOne({email:email},function(err,user){
+        if (err) {
+            console.log("err ",err);
+        } else {
+            if (!user) {
+                res.status(401).send("Wrong email");
+            } else if (user.password!==password) {
+                res.status(401).send("Wrong password");
+            } else {
+                res.status(200).send("Welcome");
+            }
+        }
+    });
+})
 
+app.post('/users/insert',function(req,res){
+    res.header('Access-Control-Allow-Origin','*');
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    var item ={
+        first_name: req.body.user.firstName,
+        last_name: req.body.user.lastName,
+        email: req.body.user.email,
+        password: req.body.user.password
+    };
+    var newuser = new Userdata(item);
+    newuser.save();
+    res.send('"Node-Express server: User added to database"');
 })
 
 app.listen(3000, function() {
